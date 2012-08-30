@@ -1,0 +1,9 @@
+applet/*
+lib/*
+MUtil/
+config.properties
+*.jar
+mutil_log.txt
+IrmaWriter.log
+bin/
+.settings/

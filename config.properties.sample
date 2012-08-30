@@ -1,0 +1,10 @@
+#mail
+fromAdres=mail@example.com
+smtpServer=smtp.example.com
+mailSubject=Your IRMACard is ready
+mailBody=Hello $NAME$,\n\nYour IRMACard is ready. Your PIN is $PIN$.
+
+#database
+database_url=jdbc:mysql://localhost:3306/irma_test
+database_username=your username
+database_password=your password
