@@ -7,19 +7,25 @@ import java.awt.Image;
  *
  */
 public class Card {
+	private String userID;
 	private String name;
 	private String email;
 	private Image photo;
 	private int cardId;
 	private boolean personalised = false;
 	
-	public Card(String name, String email, Image photo, int cardId) {
+	public Card(String userID, String name, String email, Image photo, int cardId) {
+		this.userID = userID;
 		this.name = name;
 		this.email = email;
 		this.photo = photo;
 		this.cardId = cardId;
 	}
 
+	public String getUserID() {
+		return userID;
+	}
+	
 	public String getName() {
 		return name;
 	}

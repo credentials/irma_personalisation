@@ -3,16 +3,9 @@ package nl.ru.cs.irma.irmawriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardWatchEventKinds;
-import java.nio.file.WatchEvent;
-import java.nio.file.WatchKey;
-import java.nio.file.WatchService;
-import java.sql.SQLException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.Observable;
 import java.util.Properties;
@@ -26,11 +19,7 @@ import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import javax.smartcardio.CardException;
-
-import net.sourceforge.scuba.smartcards.CardServiceException;
-
-import credentials.CredentialsException;
+import credentials.Attributes;
 
 public class CardWriter extends Observable {
 	private static final String MUTIL_LOG_LOCATION = "mutil_log.txt";
@@ -66,7 +55,10 @@ public class CardWriter extends Observable {
 			setProgress(40); 
 			
 			IrmaIssuer issuer = new IrmaIssuer();
-			issuer.issue();
+			Attributes attributes = new Attributes();
+			attributes.add("userID", card.getUserID().getBytes());
+			attributes.add("securityHash", hash(card.getUserID(), Integer.toString(card.getCardId())));
+			issuer.issue(attributes);
 			issuer.setPin(pin);
 			setProgress(80);
 				
@@ -87,6 +79,14 @@ public class CardWriter extends Observable {
 			throw e;
 		}
 		DatabaseConnection.commit(); //Only save the changed status if personalization actually worked
+	}
+
+	private byte[] hash(String... strings) throws NoSuchAlgorithmException {
+		MessageDigest digest = MessageDigest.getInstance("SHA-256");
+		for(String string : strings) {
+			digest.update(string.getBytes());
+		}
+		return digest.digest();
 	}
 
 	private void loadApplet() throws IOException, InterruptedException, MUtilException {

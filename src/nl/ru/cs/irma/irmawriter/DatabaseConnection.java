@@ -28,17 +28,18 @@ public class DatabaseConnection {
 		try {
 			con = DriverManager.getConnection(config.getProperty("database_url"), config.getProperty("database_username"), config.getProperty("database_password"));
 			
-			stmt = con.prepareStatement("SELECT givenName, surname, email, photo, cardID " +
+			stmt = con.prepareStatement("SELECT eduPersonPrincipalName, givenName, surname, email, photo, cardID " +
 										"FROM PilotParticipants "+
 										"WHERE cardStatus='from printer'");
 			
 			ResultSet result = stmt.executeQuery();
 			while(result.next()) {
+				String userID = result.getString("eduPersonPrincipalName");
 				String name = result.getString("givenName") + " " + result.getString("surname");
 				String email = result.getString("email");
 				int cardId = result.getInt("cardID");
 				BufferedImage photo = ImageIO.read(result.getBinaryStream("photo"));
-				cards.add(new Card(name, email, photo, cardId));
+				cards.add(new Card(userID, name, email, photo, cardId));
 			}
 		}
 		finally {
