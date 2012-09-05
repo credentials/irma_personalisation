@@ -26,27 +26,26 @@ import net.sourceforge.scuba.smartcards.TerminalCardService;
 public class IrmaIssuer {
 	/** The identifier of the credential on the smartcard
 	 * TODO change?*/
-    public static short CRED_NR = (short) 4;
+    public static short CRED_NR = (short) 1;
     
     /** Actual location of the files. */
 	/** TODO: keep this in mind, do we need BASE_LOCATION to point to .../parameter/
 	 *  to keep idemix-library happy, i.e. so that it can find gp.xml and sp.xml?
 	 */
     public static final URI BASE_LOCATION = new File(
-            System.getProperty("user.dir")).toURI().resolve("files/parameter/");
+            System.getProperty("user.dir")).toURI().resolve("irma_configuration/Surfnet/");
     
     /** Actual location of the public issuer-related files. */
-    public static final URI ISSUER_LOCATION = BASE_LOCATION
-            .resolve("../issuerData/");
+    public static final URI ISSUER_LOCATION = BASE_LOCATION;
     
     /** URIs and locations for issuer */
-    public static final URI ISSUER_SK_LOCATION = BASE_LOCATION.resolve("../private/isk.xml");
+    public static final URI ISSUER_SK_LOCATION = BASE_LOCATION.resolve("private/isk.xml");
     public static final URI ISSUER_PK_LOCATION = ISSUER_LOCATION.resolve("ipk.xml");
     
     /** Credential location */
-    public static final String CRED_STRUCT_NAME = "CredStructCard4";
+    public static final String CRED_STRUCT_NAME = "root";
     public static final URI CRED_STRUCT_LOCATION = BASE_LOCATION
-            .resolve("../issuerData/" + CRED_STRUCT_NAME + ".xml");
+            .resolve( "Issues/" + CRED_STRUCT_NAME + "/structure.xml");
 
 	private static final byte[] DEFAULT_PIN = {0x30, 0x30, 0x30, 0x30};
     
@@ -58,9 +57,9 @@ public class IrmaIssuer {
 	private IdemixService idemixService;
     static {
         try {
-            BASE_ID = new URI("http://www.zurich.ibm.com/security/idmx/v2/");
-            ISSUER_ID = new URI("http://www.issuer.com/");
-            CRED_STRUCT_ID = new URI("http://www.ngo.org/" + CRED_STRUCT_NAME + ".xml");
+            BASE_ID = new URI("http://www.irmacard.org/credentials/phase1/Surfnet/");
+            ISSUER_ID = new URI("http://www.irmacard.org/credentials/phase1/Surfnet/");
+            CRED_STRUCT_ID = new URI("http://www.irmacard.org/credentials/phase1/Surfnet/" + CRED_STRUCT_NAME + "/structure.xml");
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -98,8 +97,12 @@ public class IrmaIssuer {
 	public static void setupCredentialStructure() {
     	Locations.init(CRED_STRUCT_ID, CRED_STRUCT_LOCATION);
     }
-	
+
 	public void issue() throws CardException, CredentialsException, CardServiceException {
+		issue(getIssuanceAttributes());
+	}
+
+	public void issue(Attributes attributes) throws CardException, CredentialsException, CardServiceException {
 		
 		idemixService.open();
 		
@@ -114,8 +117,6 @@ public class IrmaIssuer {
 		CardService cs = getCardService();
 		IdemixCredentials ic = new IdemixCredentials(cs);
 		
-		Attributes attributes = getIssuanceAttributes();
-
 		ic.issue(spec, isk, attributes);
 		
 		idemixService.close();
