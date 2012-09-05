@@ -186,7 +186,9 @@ public class IrmaWriter {
 								setAllEnabled(false);
 								writer.Write(cards.get(selectedCard));
 								nextCard();
+								lblInfo.setText(BUNDLE.getString("IrmaWriter.lblInfo.writeSuccess"));
 							} catch (Exception e) {
+								progressBar.setValue(0);
 								error(e, BUNDLE.getString("IrmaWriter.lblInfo.writeCardError"));
 							}
 							finally {
@@ -245,6 +247,7 @@ public class IrmaWriter {
 
 	private void showCard() {
 		if(selectedCard >= 0 && selectedCard < cards.size()) {
+			lblInfo.setText("");
 			Card card = cards.get(selectedCard);
 			lblImage.setIcon(new ImageIcon(card.getPhoto()));
 			lblCardNumber.setText(Integer.toString(card.getCardId()));
