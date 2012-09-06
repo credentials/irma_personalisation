@@ -44,7 +44,7 @@ public class CardWriter extends Observable {
 	
 		byte[] pin = new byte[4];
 		for(int i = 0; i < 4; i++) {
-			pin[i] = (byte) rand.nextInt(10);
+			pin[i] = (byte) (rand.nextInt(10) + 0x30);
 		}
 		
 		try{
@@ -125,9 +125,6 @@ public class CardWriter extends Observable {
 
 	private void sendMail(byte[] pin, Card card) throws MessagingException, FileNotFoundException, IOException {
 		
-		for(int i = 0; i < 4; i++) {
-			pin[i] += 0x30;
-		}
 		String pinString = new String(pin);
 		
 		if(config == null) {
