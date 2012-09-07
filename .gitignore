@@ -2,6 +2,7 @@ applet/*
 lib/*
 MUtil/
 config.properties
+config.encrypted
 *.jar
 mutil_log.txt
 IrmaWriter.log
