@@ -1,26 +1,58 @@
 package nl.ru.cs.irma.irmawriter;
 
-import java.security.AlgorithmParameters;
-import java.security.GeneralSecurityException;
-import java.security.spec.KeySpec;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.nio.CharBuffer;
+import java.util.Properties;
 
-import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.PBEKeySpec;
-import javax.crypto.spec.SecretKeySpec;
+import org.jasypt.util.text.BasicTextEncryptor;
+
 
 public class EncryptedLoader {
-	public static byte[] encrypt(byte[] data, char[] password, byte[] salt) throws GeneralSecurityException {
-		SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-		KeySpec spec = new PBEKeySpec(password, salt, 65536, 256);
-		SecretKey tmp = factory.generateSecret(spec);
-		SecretKey secret = new SecretKeySpec(tmp.getEncoded(), "AES");
-		Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-		cipher.init(Cipher.ENCRYPT_MODE, secret);
-		AlgorithmParameters params = cipher.getParameters();
-		byte[] iv = params.getParameterSpec(IvParameterSpec.class).getIV();
-		return cipher.doFinal(data);
+	BasicTextEncryptor encryptor;
+	String filename;
+	
+	public EncryptedLoader(String password, String filename) {
+		encryptor = new BasicTextEncryptor();
+		encryptor.setPassword(password);
+		this.filename = filename;
+	}
+	
+	public Properties load() throws IOException {
+		StringBuilder fileData = new StringBuilder();
+        BufferedReader reader = new BufferedReader(
+                new FileReader(filename));
+        char[] buf = new char[1024];
+        int numRead=0;
+        while((numRead=reader.read(buf)) != -1){
+            String readData = String.valueOf(buf, 0, numRead);
+            fileData.append(readData);
+        }
+        reader.close();
+        
+        String decrypted = encryptor.decrypt(fileData.toString());
+		
+		Properties props = new Properties();
+		props.load(new StringReader(decrypted));
+		return props;
+	}
+	
+	public void save(Properties properties) throws IOException {
+		StringWriter stringWriter = new StringWriter();
+		properties.store(stringWriter, "");
+		
+		String encrypted = encryptor.encrypt(stringWriter.toString());
+		
+		BufferedWriter bw = new BufferedWriter(new FileWriter(filename));
+		bw.write(encrypted);
+		bw.close();
 	}
 }
