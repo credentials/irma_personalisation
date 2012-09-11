@@ -14,7 +14,7 @@ import org.junit.Test;
 public class EncryptedLoaderTest {
 
 	private static final String FILENAME = "config.encrypted";
-	private static final String PASSWORD = "a5X32c9";
+	private static final char[] PASSWORD = {'a', '5', 'X', '3', '2', 'c', '9'};
 
 	@Test
 	public void TestSaveLoad() throws FileNotFoundException, IOException {

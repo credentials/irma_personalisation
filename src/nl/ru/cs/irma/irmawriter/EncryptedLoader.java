@@ -20,9 +20,9 @@ public class EncryptedLoader {
 	BasicTextEncryptor encryptor;
 	String filename;
 	
-	public EncryptedLoader(String password, String filename) {
+	public EncryptedLoader(char[] cs, String filename) {
 		encryptor = new BasicTextEncryptor();
-		encryptor.setPassword(password);
+		encryptor.setPasswordCharArray(cs);
 		this.filename = filename;
 	}
 	
