@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 public class passwordDialog extends JDialog {
+	private static final long serialVersionUID = 3536331534846831101L;
 
 	private final JPanel contentPanel = new JPanel();
 
