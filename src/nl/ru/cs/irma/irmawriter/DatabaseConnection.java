@@ -16,11 +16,9 @@ import javax.imageio.ImageIO;
 
 public class DatabaseConnection {
 	private static Connection con = null;
-	private static Properties config = null;
 	
 
-	public static Vector<Card> loadFromPrinterCards() throws SQLException, IOException{
-		loadConfig();
+	public static Vector<Card> loadFromPrinterCards(Properties config) throws SQLException, IOException{
 		Connection con = null;
 		PreparedStatement stmt = null;
 		Vector<Card> cards = new Vector<Card>();
@@ -51,8 +49,7 @@ public class DatabaseConnection {
 		return cards;
 	}
 	
-	public static void setCardStatusPersonalized(int cardId) throws SQLException, FileNotFoundException, IOException {
-		loadConfig();
+	public static void setCardStatusPersonalized(int cardId, Properties config) throws SQLException, FileNotFoundException, IOException {
 		PreparedStatement stmt = null;
 		
 		try {
@@ -70,12 +67,12 @@ public class DatabaseConnection {
 		}
 	}
 	
-	private static void loadConfig() throws FileNotFoundException, IOException {
+	/*private static void loadConfig() throws FileNotFoundException, IOException {
 		if(config == null) {
 			config = new Properties();
 			config.load(new FileInputStream("config.properties"));
 		}
-	}
+	}*/
 	
 	public static void rollback() throws SQLException {
 		con.rollback();

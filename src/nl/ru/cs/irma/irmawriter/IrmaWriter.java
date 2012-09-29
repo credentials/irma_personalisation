@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import java.sql.SQLException;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Vector;
 import javax.swing.JButton;
@@ -65,6 +66,8 @@ public class IrmaWriter {
 	private JButton btnSkip;
 	private JSeparator separator;
 	private JButton btnClear;
+
+	private Properties config;
 	
 	/**
 	 * Launch the application.
@@ -74,9 +77,16 @@ public class IrmaWriter {
 			public void run() {
 				IrmaWriter window = null;
 				try {
-					window = new IrmaWriter();
-					if(window.frame != null) {
-						window.frame.setVisible(true);
+					passwordDialog pwDialog = new passwordDialog(null);
+					Properties config = pwDialog.showDialog();
+					if(config != null) {
+						window = new IrmaWriter(config);
+						if(window.frame != null) {
+							window.frame.setVisible(true);
+						}
+					}
+					else {
+						System.exit(0);
 					}
 				} catch (Exception e) {
 					if(window!=null && window.frame != null) {
@@ -94,10 +104,11 @@ public class IrmaWriter {
 	/**
 	 * Create the application.
 	 */
-	public IrmaWriter() {
+	public IrmaWriter(Properties config) {
+		this.config = config;
 		initialize();
 		try {
-			cards = DatabaseConnection.loadFromPrinterCards();
+			cards = DatabaseConnection.loadFromPrinterCards(config);
 		} catch (Exception e) {
 			error(e, BUNDLE.getString("IrmaWriter.lblInfo.cardLoadError"));
 		}
@@ -172,7 +183,7 @@ public class IrmaWriter {
 		btnWriteButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					final CardWriter writer = new CardWriter();
+					final CardWriter writer = new CardWriter(config);
 					writer.addObserver(new Observer(){
 						@Override
 						public void update(Observable arg0, Object arg1) {

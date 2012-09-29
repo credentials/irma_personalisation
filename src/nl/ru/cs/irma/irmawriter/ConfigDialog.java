@@ -13,6 +13,8 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.BoxLayout;
+
+import java.awt.Frame;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -22,6 +24,7 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.ResourceBundle;
+import javax.swing.JTextArea;
 
 public class ConfigDialog extends JDialog {
 	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("nl.ru.cs.irma.irmawriter.messages"); //$NON-NLS-1$
@@ -31,18 +34,21 @@ public class ConfigDialog extends JDialog {
 	private JTextField tbFrom;
 	private JTextField tbSmtp;
 	private JTextField tbMailSubject;
-	private JTextField tbMailBody;
 	private JTextField tbDbUrl;
 	private JTextField tbDbUsername;
 	private JTextField tbDbPassword;
 	private JPasswordField passwordField;
+
+	private Properties props = null;
+
+	private JTextArea tbMailBody;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		try {
-			ConfigDialog dialog = new ConfigDialog();
+			ConfigDialog dialog = new ConfigDialog(null);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -53,7 +59,8 @@ public class ConfigDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public ConfigDialog() {
+	public ConfigDialog(JDialog owner) {
+		super(owner, true);
 		setBounds(100, 100, 633, 417);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -62,7 +69,7 @@ public class ConfigDialog extends JDialog {
 		gbl_contentPanel.columnWidths = new int[]{0, 0, 0};
 		gbl_contentPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_contentPanel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		gbl_contentPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPanel.setLayout(gbl_contentPanel);
 		{
 			JLabel lblMail = new JLabel(BUNDLE.getString("ConfigDialog.lblMail.text")); //$NON-NLS-1$
@@ -142,15 +149,14 @@ public class ConfigDialog extends JDialog {
 			contentPanel.add(lblBody, gbc_lblBody);
 		}
 		{
-			tbMailBody = new JTextField();
+			tbMailBody = new JTextArea();
 			GridBagConstraints gbc_tbMailBody = new GridBagConstraints();
+			gbc_tbMailBody.gridheight = 2;
 			gbc_tbMailBody.insets = new Insets(0, 0, 5, 0);
-			gbc_tbMailBody.anchor = GridBagConstraints.SOUTH;
-			gbc_tbMailBody.fill = GridBagConstraints.HORIZONTAL;
+			gbc_tbMailBody.fill = GridBagConstraints.BOTH;
 			gbc_tbMailBody.gridx = 1;
 			gbc_tbMailBody.gridy = 4;
 			contentPanel.add(tbMailBody, gbc_tbMailBody);
-			tbMailBody.setColumns(10);
 		}
 		{
 			JLabel lblDatabase = new JLabel(BUNDLE.getString("ConfigDialog.lblDatabase.text")); //$NON-NLS-1$
@@ -229,13 +235,13 @@ public class ConfigDialog extends JDialog {
 			contentPanel.add(lblEncryption, gbc_lblEncryption);
 		}
 		{
-			JLabel lblPassword_1 = new JLabel(BUNDLE.getString("ConfigDialog.lblPassword_1.text")); //$NON-NLS-1$
-			GridBagConstraints gbc_lblPassword_1 = new GridBagConstraints();
-			gbc_lblPassword_1.anchor = GridBagConstraints.EAST;
-			gbc_lblPassword_1.insets = new Insets(0, 0, 5, 5);
-			gbc_lblPassword_1.gridx = 0;
-			gbc_lblPassword_1.gridy = 12;
-			contentPanel.add(lblPassword_1, gbc_lblPassword_1);
+			JLabel lblEncPassword = new JLabel(BUNDLE.getString("ConfigDialog.lblPassword_1.text")); //$NON-NLS-1$
+			GridBagConstraints gbc_lblEncPassword = new GridBagConstraints();
+			gbc_lblEncPassword.anchor = GridBagConstraints.EAST;
+			gbc_lblEncPassword.insets = new Insets(0, 0, 5, 5);
+			gbc_lblEncPassword.gridx = 0;
+			gbc_lblEncPassword.gridy = 12;
+			contentPanel.add(lblEncPassword, gbc_lblEncPassword);
 		}
 		{
 			passwordField = new JPasswordField();
@@ -251,7 +257,7 @@ public class ConfigDialog extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton(BUNDLE.getString("ConfigDialog.okButton.text")); //$NON-NLS-1$
+				JButton okButton = new JButton(BUNDLE.getString("okButton.text")); //$NON-NLS-1$
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						Properties config = new Properties();
@@ -265,6 +271,8 @@ public class ConfigDialog extends JDialog {
 						config.setProperty("database_username", tbDbUsername.getText());
 						config.setProperty("database_password", tbDbPassword.getText());
 						
+						props = config;
+						
 						EncryptedLoader loader = new EncryptedLoader(passwordField.getPassword(), CONFIG_FILENAME);
 						try {
 							loader.save(config);
@@ -273,6 +281,7 @@ public class ConfigDialog extends JDialog {
 							JOptionPane.showMessageDialog(ConfigDialog.this, BUNDLE.getString("ConfigDialog.mbox.writeError"));
 							e.printStackTrace();
 						}
+						setVisible(false);
 					}
 				});
 				okButton.setActionCommand("OK");
@@ -280,7 +289,7 @@ public class ConfigDialog extends JDialog {
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
-				JButton cancelButton = new JButton(BUNDLE.getString("ConfigDialog.cancelButton.text")); //$NON-NLS-1$
+				JButton cancelButton = new JButton(BUNDLE.getString("cancelButton.text")); //$NON-NLS-1$
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						setVisible(false);
@@ -292,4 +301,8 @@ public class ConfigDialog extends JDialog {
 		}
 	}
 
+	public Properties showDialog() throws IOException {
+		setVisible(true);
+		return props;
+	}
 }

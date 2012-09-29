@@ -28,15 +28,18 @@ public class CardWriter extends Observable {
 	private static final String DELETE_SCRIPT_LOCATION = "delete_applet.txt";
 
 	private static final String MUTIL_LOCATION = "MUtil/MUtil.exe";
-
-	private static Properties config = null;
 	
 	private static Random rand;
 	
 	private int progress = 0;
+	private Properties config;
 	
 	static {
 		rand = new Random();
+	}
+	
+	public CardWriter(Properties config) {
+		this.config = config;
 	}
 	
 	public void Write(Card card) throws Exception {
@@ -48,7 +51,7 @@ public class CardWriter extends Observable {
 		}
 		
 		try{
-			DatabaseConnection.setCardStatusPersonalized(card.getCardId()); //Start with db, so we won't have unsaved personalized cards. Will commit when card is personalized.
+			DatabaseConnection.setCardStatusPersonalized(card.getCardId(), config); //Start with db, so we won't have unsaved personalized cards. Will commit when card is personalized.
 			setProgress(15); 
 			
 			loadApplet();
@@ -126,11 +129,6 @@ public class CardWriter extends Observable {
 	private void sendMail(byte[] pin, Card card) throws MessagingException, FileNotFoundException, IOException {
 		
 		String pinString = new String(pin);
-		
-		if(config == null) {
-			config = new Properties();
-			config.load(new FileInputStream("config.properties"));
-		}
 		
 		Properties props = System.getProperties();
 		props.put("mail.smtp.host", config.getProperty("smtpServer"));
