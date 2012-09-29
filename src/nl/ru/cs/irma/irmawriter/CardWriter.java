@@ -133,7 +133,15 @@ public class CardWriter extends Observable {
 		Properties props = System.getProperties();
 		props.put("mail.smtp.host", config.getProperty("smtpServer"));
 		Session session = Session.getDefaultInstance(props);
-		Message msg = new MimeMessage(session);
+		Message msg = new MimeMessage(session){
+			@Override
+			protected void updateMessageID() throws MessagingException {
+				super.updateMessageID();
+				String messageId = getMessageID();
+				String fromAdres = config.getProperty("fromAdres");
+				setHeader("Message-ID", messageId.substring(0, messageId.indexOf('@')) + fromAdres.substring(fromAdres.indexOf('@')));
+			}
+		};
 		try {
 			msg.setFrom(new InternetAddress(config.getProperty("fromAdres")));
 		} catch (AddressException e) {
