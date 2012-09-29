@@ -25,6 +25,7 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 
 public class passwordDialog extends JDialog {
+	private static final long serialVersionUID = 3536331534846831101L;
 	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("nl.ru.cs.irma.irmawriter.messages"); //$NON-NLS-1$
 
 	private final JPanel contentPanel = new JPanel();

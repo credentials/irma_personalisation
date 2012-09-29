@@ -8,13 +8,9 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import java.awt.GridLayout;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
-import javax.swing.BoxLayout;
-
-import java.awt.Frame;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -27,6 +23,8 @@ import java.util.ResourceBundle;
 import javax.swing.JTextArea;
 
 public class ConfigDialog extends JDialog {
+	private static final long serialVersionUID = 3564813686350167114L;
+
 	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("nl.ru.cs.irma.irmawriter.messages"); //$NON-NLS-1$
 
 	public static final String CONFIG_FILENAME = "config.encrypted";

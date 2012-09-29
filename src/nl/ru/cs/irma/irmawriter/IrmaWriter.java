@@ -1,43 +1,35 @@
 package nl.ru.cs.irma.irmawriter;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.SystemColor;
-import javax.mail.MessagingException;
-import javax.smartcardio.CardException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.ResourceBundle;
+import java.util.Vector;
+
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import java.sql.SQLException;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.Properties;
-import java.util.ResourceBundle;
-import java.util.Vector;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.BoxLayout;
-import java.awt.Component;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
 import javax.swing.JSplitPane;
-import javax.swing.JScrollPane;
-import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.ListSelectionEvent;
 import javax.swing.JProgressBar;
-
-import nl.ru.cs.irma.irmawriter.CardWriter.MUtilException;
-import credentials.CredentialsException;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 public class IrmaWriter {
 	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("nl.ru.cs.irma.irmawriter.messages"); //$NON-NLS-1$
