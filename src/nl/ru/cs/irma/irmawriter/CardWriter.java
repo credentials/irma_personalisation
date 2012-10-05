@@ -45,9 +45,14 @@ public class CardWriter extends Observable {
 	public void Write(Card card) throws Exception {
 		setProgress(5);
 	
-		byte[] pin = new byte[4];
+		byte[] credentialPin = new byte[4];
 		for(int i = 0; i < 4; i++) {
-			pin[i] = (byte) (rand.nextInt(10) + 0x30);
+			credentialPin[i] = (byte) (rand.nextInt(10) + 0x30);
+		}
+		
+		byte[] cardPin = new byte[6];
+		for(int i = 0; i < 6; i++) {
+			cardPin[i] = (byte) (rand.nextInt(10) + 0x30);
 		}
 		
 		try{
@@ -62,13 +67,15 @@ public class CardWriter extends Observable {
 			attributes.add("userID", card.getUserID().getBytes());
 			attributes.add("securityHash", hash(card.getUserID(), Integer.toString(card.getCardId())));
 			issuer.issue(attributes);
-			issuer.setPin(pin);
+			issuer.setPin(credentialPin);
 			setProgress(80);
-				
+			
+			//TODO: set credential pin
+			
 			card.setPersonalised();
 			
 			setProgress(90);
-			sendMail(pin, card);
+			sendMail(cardPin, credentialPin, card);
 			setProgress(100);
 		}
 		catch(Exception e) {
@@ -126,9 +133,10 @@ public class CardWriter extends Observable {
 		}
 	}
 
-	private void sendMail(byte[] pin, Card card) throws MessagingException, FileNotFoundException, IOException {
+	private void sendMail(byte[] cardPin, byte[] credentialPin, Card card) throws MessagingException, FileNotFoundException, IOException {
 		
-		String pinString = new String(pin);
+		String cardPinString = new String(cardPin);
+		String credentialPinString = new String(credentialPin);
 		
 		Properties props = System.getProperties();
 		props.put("mail.smtp.host", config.getProperty("smtpServer"));
@@ -149,7 +157,7 @@ public class CardWriter extends Observable {
 		}
 		msg.setRecipient(Message.RecipientType.TO, new InternetAddress(card.getEmail()));
 		msg.setSubject(config.getProperty("mailSubject"));
-		msg.setText(config.getProperty("mailBody").replace("$NAME$", card.getName()).replace("$PIN$", pinString));
+		msg.setText(config.getProperty("mailBody").replace("$NAME$", card.getName()).replace("$CARD_PIN$", cardPinString).replace("$CREDENTIAL_PIN$", credentialPinString));
 		msg.setSentDate(new Date());
 		Transport.send(msg);
 	}
