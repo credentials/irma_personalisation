@@ -1,5 +1,8 @@
 package nl.ru.cs.irma.irmawriter;
 
+import java.awt.AlphaComposite;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -16,7 +19,7 @@ import javax.imageio.ImageIO;
 
 public class DatabaseConnection {
 	private static Connection con = null;
-	
+	private static final int IMAGE_SIZE = 158;
 
 	public static Vector<Card> loadFromPrinterCards(Properties config) throws SQLException, IOException{
 		Connection con = null;
@@ -37,7 +40,8 @@ public class DatabaseConnection {
 				String email = result.getString("email");
 				int cardId = result.getInt("cardID");
 				BufferedImage photo = ImageIO.read(result.getBinaryStream("photo"));
-				cards.add(new Card(userID, name, email, photo, cardId));
+				BufferedImage scaledPhoto = resizeImage(photo);
+				cards.add(new Card(userID, name, email, scaledPhoto, cardId));
 			}
 		}
 		finally {
@@ -47,6 +51,22 @@ public class DatabaseConnection {
 		}
 		
 		return cards;
+	}
+
+	private static BufferedImage resizeImage(BufferedImage photo) {
+		int maxDimension = Math.max(photo.getWidth(), photo.getHeight());
+		double scale = IMAGE_SIZE / (double) maxDimension;
+		int newWidth = (int)(scale*photo.getWidth());
+		int newHeight = (int)(scale*photo.getHeight());
+		BufferedImage scaledPhoto = new BufferedImage(newWidth, newHeight, photo.getType());
+		Graphics2D g = scaledPhoto.createGraphics();
+		g.setComposite(AlphaComposite.Src);
+		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		g.setRenderingHint(RenderingHints.KEY_RENDERING,RenderingHints.VALUE_RENDER_QUALITY);
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+		g.drawImage(photo, 0, 0, newWidth, newHeight, null);
+		g.dispose();
+		return scaledPhoto;
 	}
 	
 	public static void setCardStatusPersonalized(int cardId, Properties config) throws SQLException, FileNotFoundException, IOException {
