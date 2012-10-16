@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project name="IRMA personalisation application (runnable jar)" default="application">
+  
+  <property file="build.properties" />
+
+  <path id="classpath">
+    <pathelement path="${lib.dir}/*.jar" />
+  </path>
+
+  <target name="clean">
+    <delete dir="${bin.dir}" />
+    <!-- <delete dir="${jar.dir}" includes="*.jar" /> -->
+  </target>
+
+  <target name="compile">
+    <mkdir dir="${bin.dir}" />
+    <javac srcdir="${src.dir}" destdir="${bin.dir}" includeantruntime="false">
+       <classpath refid="classpath" />
+    </javac>
+  </target>
+
+  <target name="archive" depends="compile">
+    <jar destfile="${jar.dir}/${jar.archive}">
+      <fileset dir="${bin.dir}" />
+      <fileset dir="${src.dir}" />
+    </jar>
+  </target>
+
+  <target name="application" depends="compile">
+    <!-- <jar destfile="irma_personalisation.jar" filesetmanifest="mergewithoutmain"> -->
+    <jar destfile="${jar.application.dir}/${jar.application}">
+        
+      <manifest>
+        <attribute name="Main-Class" value="${jar.application.run}"/>
+        <attribute name="Class-Path" value="."/>
+      </manifest>
+                
+      <fileset dir="${bin.dir}" />
+      <fileset dir="../scuba/scuba_sc_j2se/bin"/>
+      <fileset dir="../scuba/scuba_smartcards/bin"/>
+      <fileset dir="../scuba/scuba_util/bin"/>
+      <fileset dir="../credentials_api/bin"/>
+      <fileset dir="../idemix_terminal/bin"/>
+      <fileset dir="../idemix_library/bin"/>
+      <zipfileset excludes="META-INF/*.SF" src="lib/mysql-connector-java-5.1.21-bin.jar"/>
+      <zipfileset excludes="META-INF/*.SF" src="lib/mail.jar"/>
+      <zipfileset excludes="META-INF/*.SF" src="lib/jasypt-1.9.0.jar"/>
+      <zipfileset excludes="META-INF/*.SF" src="../credentials_api/lib/bcprov-jdk15on-147.jar"/>
+      
+    </jar>
+
+    <!-- <signjar jar="${jar.application.dir}/${jar.application}" alias="${key.alias}" storepass="${key.storepass}" keystore="${key.store}" /> -->
+  </target>
+    
+</project>
