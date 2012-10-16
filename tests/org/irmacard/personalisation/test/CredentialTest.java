@@ -1,10 +1,10 @@
-package nl.ru.cs.irma.tests;
+package org.irmacard.personalisation.test;
 
 import javax.smartcardio.CardException;
 
 import net.sourceforge.scuba.smartcards.CardServiceException;
-import nl.ru.cs.irma.irmawriter.IrmaIssuer;
 
+import org.irmacard.personalisation.IrmaIssuer;
 import org.junit.Test;
 
 import credentials.Attributes;

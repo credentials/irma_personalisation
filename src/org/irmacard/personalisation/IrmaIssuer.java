@@ -1,4 +1,4 @@
-package nl.ru.cs.irma.irmawriter;
+package org.irmacard.personalisation;
 
 import java.io.File;
 import java.math.BigInteger;

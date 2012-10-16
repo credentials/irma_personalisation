@@ -1,4 +1,4 @@
-package nl.ru.cs.irma.irmawriter;
+package org.irmacard.personalisation;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -32,7 +32,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 public class IrmaWriter {
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("nl.ru.cs.irma.irmawriter.messages"); //$NON-NLS-1$
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("org.irmacard.personalisation.messages"); //$NON-NLS-1$
 
 	private JFrame frame;
 	private Vector<Card> cards;

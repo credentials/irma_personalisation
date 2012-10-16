@@ -1,10 +1,9 @@
-package nl.ru.cs.irma.irmawriter;
+package org.irmacard.personalisation;
 
 import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;

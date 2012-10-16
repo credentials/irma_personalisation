@@ -1,4 +1,4 @@
-package nl.ru.cs.irma.irmawriter;
+package org.irmacard.personalisation;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -25,7 +25,7 @@ import javax.swing.JTextArea;
 public class ConfigDialog extends JDialog {
 	private static final long serialVersionUID = 3564813686350167114L;
 
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("nl.ru.cs.irma.irmawriter.messages"); //$NON-NLS-1$
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("org.irmacard.personalisation.messages"); //$NON-NLS-1$
 
 	public static final String CONFIG_FILENAME = "config.encrypted";
 	private final JPanel contentPanel = new JPanel();

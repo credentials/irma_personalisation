@@ -1,4 +1,4 @@
-package nl.ru.cs.irma.irmawriter;
+package org.irmacard.personalisation;
 
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;

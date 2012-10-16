@@ -1,4 +1,4 @@
-package nl.ru.cs.irma.tests;
+package org.irmacard.personalisation.test;
 
 import static org.junit.Assert.*;
 
@@ -7,8 +7,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
-import nl.ru.cs.irma.irmawriter.EncryptedLoader;
 
+import org.irmacard.personalisation.EncryptedLoader;
 import org.junit.Test;
 
 public class EncryptedLoaderTest {
