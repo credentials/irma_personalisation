@@ -18,7 +18,8 @@ import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import credentials.Attributes;
+
+import org.irmacard.credentials.Attributes;
 
 public class CardWriter extends Observable {
 	private static final String MUTIL_LOG_LOCATION = "mutil_log.txt";

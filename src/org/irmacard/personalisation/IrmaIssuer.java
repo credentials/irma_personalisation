@@ -9,13 +9,14 @@ import javax.smartcardio.CardException;
 import javax.smartcardio.CardTerminal;
 import javax.smartcardio.TerminalFactory;
 
+import org.irmacard.credentials.Attributes;
+import org.irmacard.credentials.CredentialsException;
+import org.irmacard.credentials.idemix.IdemixCredentials;
+import org.irmacard.credentials.idemix.IdemixPrivateKey;
+import org.irmacard.credentials.idemix.spec.IdemixIssueSpecification;
+
 import com.ibm.zurich.credsystem.utils.Locations;
 
-import credentials.Attributes;
-import credentials.CredentialsException;
-import credentials.idemix.IdemixCredentials;
-import credentials.idemix.IdemixPrivateKey;
-import credentials.idemix.spec.IdemixIssueSpecification;
 
 import service.IdemixService;
 
@@ -57,9 +58,9 @@ public class IrmaIssuer {
 	private IdemixService idemixService;
     static {
         try {
-            BASE_ID = new URI("http://www.irmacard.org/credentials/phase1/Surfnet/");
-            ISSUER_ID = new URI("http://www.irmacard.org/credentials/phase1/Surfnet/");
-            CRED_STRUCT_ID = new URI("http://www.irmacard.org/credentials/phase1/Surfnet/" + CRED_STRUCT_NAME + "/structure.xml");
+            BASE_ID = new URI("http://www.irmacard.org/org.irmacard.credentials/phase1/Surfnet/");
+            ISSUER_ID = new URI("http://www.irmacard.org/org.irmacard.credentials/phase1/Surfnet/");
+            CRED_STRUCT_ID = new URI("http://www.irmacard.org/org.irmacard.credentials/phase1/Surfnet/" + CRED_STRUCT_NAME + "/structure.xml");
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }

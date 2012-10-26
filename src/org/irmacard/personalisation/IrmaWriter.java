@@ -45,9 +45,9 @@ public class IrmaWriter {
 
 	private JLabel lblCardNumber;
 
-	private DefaultListModel<Integer> cardsListModel;
+	private DefaultListModel cardsListModel;
 
-	private JList<Integer> cardsList;
+	private JList cardsList;
 
 	private JLabel lblPersonalisedWarning;
 
@@ -136,8 +136,8 @@ public class IrmaWriter {
 		
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollPane, rightPanel);
 		
-		cardsListModel = new DefaultListModel<Integer>();
-		cardsList = new JList<Integer>(cardsListModel);
+		cardsListModel = new DefaultListModel();
+		cardsList = new JList(cardsListModel);
 		cardsList.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent arg0) {
 				selectedCard = cardsList.getSelectedIndex();

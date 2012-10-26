@@ -4,11 +4,11 @@ import javax.smartcardio.CardException;
 
 import net.sourceforge.scuba.smartcards.CardServiceException;
 
+import org.irmacard.credentials.Attributes;
+import org.irmacard.credentials.CredentialsException;
 import org.irmacard.personalisation.IrmaIssuer;
 import org.junit.Test;
 
-import credentials.Attributes;
-import credentials.CredentialsException;
 
 public class CredentialTest {
 	@Test
