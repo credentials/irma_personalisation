@@ -108,6 +108,7 @@ public class CardWriter extends Observable {
 		while(scan.hasNextLine()) {
 			line = scan.nextLine();
 		}
+		scan.close();
 		
 		//It is not only OK if the applet is succesfully loaded, but also if it was already on the card
 		if(!line.equals("Line 3:;Loaded") && !line.endsWith("Duplicate AID")) {
@@ -125,6 +126,7 @@ public class CardWriter extends Observable {
 		while(scan.hasNextLine()) {
 			line = scan.nextLine();
 		}
+		scan.close();
 		
 		//It is not only OK if the applet is succesfully deleted, but also if it was never on the card
 		if(!line.equals("Line 3:;Deleted") && !line.endsWith("Application Not Loaded")) {

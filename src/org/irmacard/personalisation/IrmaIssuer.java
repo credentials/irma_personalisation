@@ -117,7 +117,7 @@ public class IrmaIssuer {
 		CardService cs = getCardService();
 		IdemixCredentials ic = new IdemixCredentials(cs);
 		
-		ic.issue(spec, isk, attributes);
+		ic.issue(spec, isk, attributes, null);
 		
 		idemixService.close();
 	}
