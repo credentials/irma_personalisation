@@ -8,4 +8,6 @@ mutil_log.txt
 IrmaWriter.log
 bin/
 .settings/
+.project
+.classpath
 irma_configuration/
