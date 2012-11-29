@@ -58,9 +58,9 @@ public class IrmaIssuer {
 	private IdemixService idemixService;
     static {
         try {
-            BASE_ID = new URI("http://www.irmacard.org/org.irmacard.credentials/phase1/Surfnet/");
-            ISSUER_ID = new URI("http://www.irmacard.org/org.irmacard.credentials/phase1/Surfnet/");
-            CRED_STRUCT_ID = new URI("http://www.irmacard.org/org.irmacard.credentials/phase1/Surfnet/" + CRED_STRUCT_NAME + "/structure.xml");
+            BASE_ID = new URI("http://www.irmacard.org/credentials/phase1/Surfnet/");
+            ISSUER_ID = new URI("http://www.irmacard.org/credentials/phase1/Surfnet/");
+            CRED_STRUCT_ID = new URI("http://www.irmacard.org/credentials/phase1/Surfnet/" + CRED_STRUCT_NAME + "/structure.xml");
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
