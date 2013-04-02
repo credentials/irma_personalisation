@@ -137,7 +137,7 @@ public class IrmaIssuer {
 		idemixService.open();
 		
 		idemixService.sendPin(DEFAULT_PIN);
-		idemixService.updatePin(pin);
+		idemixService.updatePin(DEFAULT_PIN, pin);
 		
 		idemixService.close();
 	}
