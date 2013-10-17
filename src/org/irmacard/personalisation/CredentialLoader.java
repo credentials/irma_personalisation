@@ -33,10 +33,18 @@ import org.irmacard.credentials.info.DescriptionStore;
 import org.irmacard.idemix.IdemixService;
 
 public class CredentialLoader {
+	static private URI CORE_LOCATION;
 	public static void main(String[] args) {
-		try {
-			//Card card = getCardFromDb(args[0]);
-			Card card = getCardFromDb("210732163");
+		try {			
+			try {
+				CORE_LOCATION = CredentialLoader.class.getClassLoader()
+						.getResource("resources/irma_configuration/").toURI();
+			} catch (URISyntaxException e) {
+				e.printStackTrace();
+				throw new RuntimeException(e.toString());
+			}
+			Card card = getCardFromDb(args[0]);
+			//Card card = null;//getCardFromDb("210732163");
 			Random rand = new Random();
 			
 			byte[] credentialPin = new byte[4];
@@ -49,14 +57,7 @@ public class CredentialLoader {
 				cardPin[i] = (byte) (rand.nextInt(10) + 0x30);
 			}
 			
-			URI CORE_LOCATION;
-			try {
-				CORE_LOCATION = CredentialLoader.class.getClassLoader()
-						.getResource("/resources/irma_configuration/").toURI();
-			} catch (URISyntaxException e) {
-				e.printStackTrace();
-				throw new RuntimeException(e.toString());
-			}
+			System.out.println("CORE_LOCATION: " + CORE_LOCATION);
 			CredentialInformation.setCoreLocation(CORE_LOCATION);
 			DescriptionStore.setCoreLocation(CORE_LOCATION);
 			
@@ -82,6 +83,7 @@ public class CredentialLoader {
 		}
 		catch(Exception e) {
 			System.err.println("Exception in Credential Loader: " + e.toString());
+			e.printStackTrace();
 			System.exit(1);
 		}
 	}
