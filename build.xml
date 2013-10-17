@@ -40,6 +40,10 @@
   </target>
 
   <target name="application" depends="compile">
+    <copy todir="${bin.dir}/resources/">
+      <fileset dir="${data.dir}"/>
+    </copy>
+
     <jar destfile="${jar.application.dir}/${jar.application.archive}">
         
       <manifest>

@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
@@ -26,7 +27,9 @@ import org.irmacard.credentials.idemix.IdemixCredentials;
 import org.irmacard.credentials.idemix.IdemixPrivateKey;
 import org.irmacard.credentials.idemix.spec.IdemixIssueSpecification;
 import org.irmacard.credentials.idemix.test.TestSetup;
+import org.irmacard.credentials.idemix.util.CredentialInformation;
 import org.irmacard.credentials.idemix.util.IssueCredentialInformation;
+import org.irmacard.credentials.info.DescriptionStore;
 import org.irmacard.idemix.IdemixService;
 
 public class CredentialLoader {
@@ -45,6 +48,17 @@ public class CredentialLoader {
 			for(int i = 0; i < 6; i++) {
 				cardPin[i] = (byte) (rand.nextInt(10) + 0x30);
 			}
+			
+			URI CORE_LOCATION;
+			try {
+				CORE_LOCATION = CredentialLoader.class.getClassLoader()
+						.getResource("/resources/irma_configuration/").toURI();
+			} catch (URISyntaxException e) {
+				e.printStackTrace();
+				throw new RuntimeException(e.toString());
+			}
+			CredentialInformation.setCoreLocation(CORE_LOCATION);
+			DescriptionStore.setCoreLocation(CORE_LOCATION);
 			
 		//	issuer.setPin(credentialPin);
 			Attributes attributes = new Attributes();
