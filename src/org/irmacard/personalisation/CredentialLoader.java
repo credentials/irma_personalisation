@@ -36,13 +36,16 @@ public class CredentialLoader {
 	static private URI CORE_LOCATION;
 	public static void main(String[] args) {
 		try {			
-			try {
-				CORE_LOCATION = CredentialLoader.class.getClassLoader()
-						.getResource("resources/irma_configuration/").toURI();
-			} catch (URISyntaxException e) {
-				e.printStackTrace();
-				throw new RuntimeException(e.toString());
-			}
+			//try {
+				//CORE_LOCATION = CredentialLoader.class.getClassLoader()
+				//		.getResource("resources/irma_configuration/").toURI();
+			//} catch (URISyntaxException e) {
+		//		e.printStackTrace();
+	//			throw new RuntimeException(e.toString());
+//			}
+			CORE_LOCATION= new File(System
+					.getProperty("user.dir")).toURI()
+					.resolve("irma_configuration/");
 			Card card = getCardFromDb(args[0]);
 			//Card card = null;//getCardFromDb("210732163");
 			Random rand = new Random();
