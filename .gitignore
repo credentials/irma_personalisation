@@ -10,4 +10,4 @@ bin/
 .settings/
 .project
 .classpath
-irma_configuration/
+irma_configuration
