@@ -37,7 +37,7 @@ public class DatabaseConnection {
 				String userID = result.getString("eduPersonPrincipalName");
 				String name = result.getString("givenName") + " " + result.getString("surname");
 				String email = result.getString("email");
-				int cardId = result.getInt("cardID");
+				String cardId = result.getString("cardID");
 				BufferedImage photo = ImageIO.read(result.getBinaryStream("photo"));
 				BufferedImage scaledPhoto = resizeImage(photo);
 				cards.add(new Card(userID, name, email, scaledPhoto, cardId));
@@ -68,7 +68,7 @@ public class DatabaseConnection {
 		return scaledPhoto;
 	}
 	
-	public static void setCardStatusPersonalized(int cardId, Properties config) throws SQLException, FileNotFoundException, IOException {
+	public static void setCardStatusPersonalized(String cardId, Properties config) throws SQLException, FileNotFoundException, IOException {
 		PreparedStatement stmt = null;
 		
 		try {
@@ -76,7 +76,7 @@ public class DatabaseConnection {
 			con.setAutoCommit(false);
 			
 			stmt = con.prepareStatement("UPDATE PilotParticipants SET cardStatus='personalised' WHERE cardId = ?");
-			stmt.setInt(1, cardId);
+			stmt.setString(1, cardId);
 			stmt.execute();
 		}
 		finally {

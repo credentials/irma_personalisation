@@ -253,7 +253,7 @@ public class IrmaWriter {
 			lblInfo.setText("");
 			Card card = cards.get(selectedCard);
 			lblImage.setIcon(new ImageIcon(card.getPhoto()));
-			lblCardNumber.setText(Integer.toString(card.getCardId()));
+			lblCardNumber.setText(card.getCardId());
 			lblPersonalisedWarning.setVisible(card.isPersonalised());
 			if(card.isPersonalised()) {
 				progressBar.setValue(100);

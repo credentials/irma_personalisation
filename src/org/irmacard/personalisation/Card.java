@@ -11,10 +11,10 @@ public class Card {
 	private String name;
 	private String email;
 	private Image photo;
-	private int cardId;
+	private String cardId;
 	private boolean personalised = false;
 	
-	public Card(String userID, String name, String email, Image photo, int cardId) {
+	public Card(String userID, String name, String email, Image photo, String cardId) {
 		this.userID = userID;
 		this.name = name;
 		this.email = email;
@@ -38,7 +38,7 @@ public class Card {
 		return photo;
 	}
 
-	public int getCardId() {
+	public String getCardId() {
 		return cardId;
 	}
 	

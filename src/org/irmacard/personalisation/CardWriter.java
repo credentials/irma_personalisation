@@ -65,7 +65,7 @@ public class CardWriter extends Observable {
 			IrmaIssuer issuer = new IrmaIssuer();
 			Attributes attributes = new Attributes();
 			attributes.add("userID", card.getUserID().getBytes());
-			attributes.add("securityHash", hash(card.getUserID(), Integer.toString(card.getCardId())));
+			attributes.add("securityHash", hash(card.getUserID(), card.getCardId()));
 			issuer.issue(attributes);
 			issuer.setPin(credentialPin);
 			setProgress(80);
