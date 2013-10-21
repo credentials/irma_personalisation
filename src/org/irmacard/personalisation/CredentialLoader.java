@@ -84,6 +84,7 @@ public class CredentialLoader {
 		catch(Exception e) {
 			System.err.println("Exception in Credential Loader: " + e.toString());
 			Logger.log("Exception in Credential Loader: " + e.toString());
+			Logger.log("Exception:", e);
 			e.printStackTrace();
 			System.exit(1);
 		}
@@ -183,14 +184,15 @@ public class CredentialLoader {
 	
 	private static void setCardStatusPersonalized(Connection con, String cardId) throws SQLException {
 		PreparedStatement stmt = null;
-		String sql = "UPDATE PilotParticipants " +
-				"SET cardStatus = 'personalised' " +
-				"WHERE cardId = ?"; 
+		String sql = "UPDATE PilotParticipants SET cardStatus = 'personalised' WHERE cardId = ?";
 		
 		try {
 			stmt = con.prepareStatement(sql);
 			stmt.setString(1, cardId);
-			stmt.execute();
+			int numUpdated = stmt.executeUpdate();
+			Logger.log("Updated " + numUpdated + " rows");
+		} catch (Exception e) {
+			Logger.log("Update failed: " + e.getMessage(), e);
 		} finally {
 			if (stmt != null) {
 				stmt.close();

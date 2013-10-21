@@ -13,10 +13,10 @@ public class Logger {
 		PrintStream stream = null;
 		try {
 			stream = new PrintStream(new BufferedOutputStream(new FileOutputStream(LOG_FILENAME, true)));
-			stream.append(String.format("===========================================\n" +
-										"%tc: %s\n", new Date(), message));
+			stream.append(String.format("===========================================%n" +
+										"%tc: %s%n", new Date(), message));
 			e.printStackTrace(stream);
-			stream.append("\n\n");
+			stream.append(String.format("%n%n"));
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -31,9 +31,9 @@ public class Logger {
 		PrintStream stream = null;
 		try {
 			stream = new PrintStream(new BufferedOutputStream(new FileOutputStream(LOG_FILENAME, true)));
-			stream.append(String.format("===========================================\n" +
-										"%tc: %s\n", new Date(), message));
-			stream.append("\n\n");
+			stream.append(String.format("===========================================%n" +
+										"%tc: %s%n", new Date(), message));
+			stream.append(String.format("%n%n"));
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
