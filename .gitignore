@@ -11,3 +11,4 @@ bin/
 .project
 .classpath
 irma_configuration
+.DS_Store
