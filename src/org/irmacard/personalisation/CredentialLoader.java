@@ -92,7 +92,6 @@ public class CredentialLoader {
 
 	private static Connection getDatabaseConnection(Properties config) throws SQLException {
 		Connection con = DriverManager.getConnection(config.getProperty("database_url"), config.getProperty("database_username"), config.getProperty("database_password"));
-		con.setAutoCommit(false);
 		return con;
 	}
 
